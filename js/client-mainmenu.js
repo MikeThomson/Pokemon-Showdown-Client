@@ -47,6 +47,7 @@
 			} else {
 				buf += '<p><button class="button" name="joinRoom" value="ladder">Ladder</button></p>';
 			}
+			buf += '<p><button class="button" name="joinRoom" value="replays">Replays</button></p>';
 			buf += '<p><button class="button" name="credits">Credits</button></p></div></div>';
 			this.$('.mainmenu').html(buf);
 
