@@ -6,11 +6,25 @@
 		type: 'replays',
 		title: 'Replays',
 		isSideRoom: true,
+		replays: [],
 		events: {
 			'click .ilink': 'clickLink'
 		},
 		initialize: function() {
 			this.$el.addClass('ps-room-light').addClass('scrollable');
+			app.on('init:loadreplays', this.replaysLoaded);
+			
+			var replays = [];
+			replays.push({id: 2});
+			replays.push({id: 3});
+			replays.push({id: 10});
+			replays.push({id: 4});
+			replays.push({id: 14});
+			//console.log(Storage);
+			Storage.replays = replays;
+			Storage.saveReplays();
+			Storage.loadReplays();
+			
 			this.update();
 		},
 		clickLink: function(e) {
@@ -28,7 +42,9 @@
 				this.lastUpdate = new Date().getTime();
 			}
 		},
+		
 		update: function(rooms) {
+			
 			if (rooms) {
 				this.lastUpdate = new Date().getTime();
 				app.roomsData = rooms;
@@ -38,11 +54,7 @@
 			var buf = '<div class="pad"><button style="float:right" name="close">Close</button>';
 			
 			buf += '<div class="roomlist" style="max-width:480px">';
-			var replays = [];
-			replays.push({id: 2});
-			replays.push({id: 3});
-			replays.push({id: 10});
-			replays.push({id: 4});
+			var replays = Storage.replays;
 			buf += '<h2>Replays</h2>';
 			for (var i=0; i<replays.length; i++) {
 				var replay = replays[i];
@@ -63,7 +75,11 @@
 
 			buf += '</div></div>';
 			this.$el.html(buf);
-		}
+		},
+		replaysLoaded:function() {
+			this.replays = Storage.replays;
+			//this.update(null);
+		},
 	});
 
 }).call(this, jQuery);

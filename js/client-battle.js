@@ -167,7 +167,7 @@
 			if (this.battle.done) {
 
 				// battle has ended
-				this.$controls.html('<div class="controls"><p><em><button name="instantReplay"><i class="icon-undo"></i> Instant Replay</button> <button name="saveReplay"><i class="icon-upload"></i> Share replay</button></p></div>');
+				this.$controls.html('<div class="controls"><p><em><button name="instantReplay"><i class="icon-undo"></i> Instant Replay</button> <button name="saveReplay"><i class="icon-upload"></i> Share replay</button> <button name="saveLocalReplay"><i class="icon-upload"></i> Save replay</button></p></div>');
 
 			} else if (!this.battle.mySide.initialized || !this.battle.yourSide.initialized) {
 
@@ -610,9 +610,11 @@
 		instantReplay: function() {
 			this.hideTooltip();
 			this.request = null;
-			console.log(this.battle)
 			this.battle.reset();
 			this.battle.play();
+		},
+		saveLocalReplay: function() {
+			console.log(this.battle);
 		},
 		skipTurn: function() {
 			this.battle.skipTurn();
