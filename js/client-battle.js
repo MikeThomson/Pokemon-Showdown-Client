@@ -610,6 +610,7 @@
 		instantReplay: function() {
 			this.hideTooltip();
 			this.request = null;
+			console.log(this.battle)
 			this.battle.reset();
 			this.battle.play();
 		},
