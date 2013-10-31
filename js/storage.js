@@ -21,6 +21,7 @@ function _Storage() {
  */
 
 _Storage.prototype.teams = null;
+_Storage.prototype.replays = null;
 
 _Storage.prototype.loadTeams = function() {
 	this.teams = [];
@@ -60,6 +61,40 @@ _Storage.prototype.deleteTeam = function() {
 _Storage.prototype.saveAllTeams = function() {
 	this.saveTeams();
 };
+
+_Storage.prototype.saveReplay = function(replay) {
+	this.loadReplays();
+	this.replays.push(replay);
+	this.saveReplays();
+};
+
+_Storage.prototype.saveReplays = function() {
+	if (window.localStorage) {
+		Storage.cantSave = false;
+		try {
+			localStorage.setItem('showdown_replays', JSON.stringify(this.replays));
+		} catch (e) {
+			if (e.code === DOMException.QUOTA_EXCEEDED_ERR) {
+				Storage.cantSave = true;
+			} else {
+				throw e;
+			}
+		}
+	}
+};
+
+_Storage.prototype.loadReplays = function() {
+	this.replays = [];
+	if (window.nodewebkit) {
+		return;
+	}
+	if (window.localStorage) {
+		var jsonString = localStorage.getItem('showdown_replays');
+		if (jsonString) this.replays = JSON.parse(jsonString);
+		app.trigger('init:loadreplays');
+	}
+};
+
 
 /*********************************************************
  * Node-webkit
