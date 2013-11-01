@@ -230,6 +230,7 @@
 					this.addRoom('lobby');
 				}
 				this.addRoom('replays');
+				
 			}
 
 			var self = this;
@@ -1149,7 +1150,8 @@
 			};
 			var typeTable = {
 				'battle': BattleRoom,
-				'chat': ChatRoom
+				'chat': ChatRoom,
+				'replay': ReplayRoom,
 			};
 
 			// the passed type overrides everything else
@@ -1177,6 +1179,7 @@
 				if (this.curSideRoom === oldRoom) this.curSideRoom = room;
 				if (this.sideRoom === oldRoom) this.sideRoom = room;
 			}
+			
 			return room;
 		},
 		focusRoom: function(id) {

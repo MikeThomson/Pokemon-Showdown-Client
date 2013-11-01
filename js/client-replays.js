@@ -13,16 +13,6 @@
 		initialize: function() {
 			this.$el.addClass('ps-room-light').addClass('scrollable');
 			app.on('init:loadreplays', this.replaysLoaded);
-			
-			var replays = [];
-			replays.push({id: 2});
-			replays.push({id: 3});
-			replays.push({id: 10});
-			replays.push({id: 4});
-			replays.push({id: 14});
-			//console.log(Storage);
-			Storage.replays = replays;
-			Storage.saveReplays();
 			Storage.loadReplays();
 			
 			this.update();
@@ -33,6 +23,18 @@
 			e.stopPropagation();
 			var roomid = $(e.currentTarget).attr('href').substr(app.root.length);
 			app.tryJoinRoom(roomid);
+			
+			// MIKE TESTING
+			
+			app.addRoom('test', 'replay');
+			var myRoom = app.rooms['test'];
+			//console.log(myRoom);
+			console.log(Storage.replays[0]);
+			myRoom.setBattle(Storage.replays[0]);
+			//myRoom.battle.reset();
+			//myRoom.battle.play();
+			//this.update(null);
+			
 		},
 		updateUser: function() {
 			this.update();
@@ -78,7 +80,7 @@
 		},
 		replaysLoaded:function() {
 			this.replays = Storage.replays;
-			//this.update(null);
+			
 		},
 	});
 
