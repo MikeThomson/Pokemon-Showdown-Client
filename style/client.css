@@ -838,6 +838,10 @@ p.or:after {
 	text-decoration: none;
 }
 
+.roomlist a.replayLink {
+	white-space: normal;
+}
+
 .ps-popup.credits {
 	max-width: 380px;
 	margin-top: 20px;
