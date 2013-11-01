@@ -21,19 +21,13 @@
 			if (e.cmdKey || e.metaKey || e.ctrlKey) return;
 			e.preventDefault();
 			e.stopPropagation();
-			var roomid = $(e.currentTarget).attr('href').substr(app.root.length);
-			app.tryJoinRoom(roomid);
+			var repId = $(e.currentTarget).attr('href');
 			
-			// MIKE TESTING
-			
-			app.addRoom('test', 'replay');
-			var myRoom = app.rooms['test'];
-			//console.log(myRoom);
-			console.log(Storage.replays[0]);
-			myRoom.setBattle(Storage.replays[0]);
-			//myRoom.battle.reset();
-			//myRoom.battle.play();
-			//this.update(null);
+			app.addRoom('Replay ' + repId, 'replay');
+			var myRoom = app.rooms['Replay ' + repId];
+			myRoom.setReplay(Storage.replays[repId]);
+			myRoom.battle.reset();
+			myRoom.battle.play();
 			
 		},
 		updateUser: function() {
@@ -60,18 +54,16 @@
 			buf += '<h2>Replays</h2>';
 			for (var i=0; i<replays.length; i++) {
 				var replay = replays[i];
-				
 				teamHtml = '';
-				
 				for(var j=0;j<6;j++) {
-					teamHtml += '<span class="pokemonicon" style="float:left;'+Tools.getIcon()+'"></span>';
+					teamHtml += '<span class="pokemonicon" style="float:left;'+Tools.getIcon(replay.player1.pokemon[j])+'"></span>';
 				}
 				teamHtml += '<span><small>vs.</small></span>';
 				for(var j=0;j<6;j++) {
-					teamHtml += '<span class="pokemonicon" style="float:left;'+Tools.getIcon()+'"></span>';
+					teamHtml += '<span class="pokemonicon" style="float:left;'+Tools.getIcon(replay.player2.pokemon[j])+'"></span>';
 				}
 				
-				buf += '<div><a href="#" class="ilink"><small style="float:right">Replay</small><strong><i class="icon-comment-alt"></i> ' + replay.id + '<br /></strong>'+teamHtml+'</a></div>';
+				buf += '<div><a href="'+i+'" class="ilink"><small style="float:right">Replay</small><strong><i class="icon-comment-alt"></i> ' + replay.id + '<br /></strong>'+teamHtml+'</a></div>';
 			}
 
 
