@@ -228,9 +228,7 @@
 					this.addRoom('rooms');
 				} else {
 					this.addRoom('lobby');
-				}
-				this.addRoom('replays');
-				
+				}				
 			}
 
 			var self = this;
