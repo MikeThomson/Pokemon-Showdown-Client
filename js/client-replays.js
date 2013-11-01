@@ -26,6 +26,7 @@
 			app.addRoom('Replay ' + repId, 'replay');
 			var myRoom = app.rooms['Replay ' + repId];
 			myRoom.setReplay(Storage.replays[repId]);
+			app.focusRoom('Replay ' + repId, 'replay');
 			myRoom.battle.reset();
 			myRoom.battle.play();
 			
@@ -34,9 +35,7 @@
 			this.update();
 		},
 		focus: function() {
-			if (new Date().getTime() - this.lastUpdate > 60*1000) {
-				this.lastUpdate = new Date().getTime();
-			}
+			this.update();
 		},
 		
 		update: function(rooms) {
