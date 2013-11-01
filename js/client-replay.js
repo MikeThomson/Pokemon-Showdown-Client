@@ -1,10 +1,13 @@
 (function($) {
 
-	var BattleRoom = this.BattleRoom = ConsoleRoom.extend({
-		type: 'battle',
-		title: '',
-		minWidth: 955,
-		maxWidth: 1180,
+	var ReplayRoom = this.ReplayRoom = BattleRoom.extend({
+		type: 'replay',
+		setBattle : function(battle) {
+			this.battle.activityQueue = battle.activityQueue;
+			console.log(this.battle);
+			this.battle.reset();
+			this.battle.play();
+		},
 		initialize: function(data) {
 			this.me = {};
 
@@ -31,10 +34,8 @@
 		},
 		battleEnded: false,
 		join: function() {
-			app.send('/join '+this.id);
 		},
 		leave: function() {
-			app.send('/leave '+this.id);
 			if (this.battle) this.battle.dealloc();
 		},
 		requestLeave: function() {
@@ -615,8 +616,6 @@
 		},
 		saveLocalReplay: function() {
 			console.log(this.battle);
-			Storage.replays = [{activityQueue : this.battle.activityQueue, id: Math.floor((Math.random()*100)+1)}];
-			Storage.saveReplays();
 		},
 		skipTurn: function() {
 			this.battle.skipTurn();
