@@ -1,11 +1,11 @@
 (function($) {
 
 	var ReplaysRoom = this.ReplaysRoom = Room.extend({
-		minWidth: 320,
+		minWidth: 500,
 		maxWidth: 1024,
 		type: 'replays',
 		title: 'Replays',
-		isSideRoom: true,
+		isSideRoom: false,
 		replays: [],
 		events: {
 			'click .ilink': 'clickLink'
@@ -55,15 +55,25 @@
 			for (var i=0; i<replays.length; i++) {
 				var replay = replays[i];
 				teamHtml = '';
+				teamHtml += '<div style="float:left;">';
+				teamHtml += '<small style="float:left">'+replay.player1.name+'</small>';
+				teamHtml += '<div><br />';
 				for(var j=0;j<6;j++) {
 					teamHtml += '<span class="pokemonicon" style="float:left;'+Tools.getIcon(replay.player1.pokemon[j])+'"></span>';
 				}
-				teamHtml += '<span><small>vs.</small></span>';
+				teamHtml += '</div>';
+				teamHtml += '</div>';
+				teamHtml += '<div style="float:left;"><br /><small>vs.</small></div>';
+				teamHtml += '<div style="float:left;">';
+				teamHtml += '<small style="float:right">'+replay.player2.name+'</small>';
+				teamHtml += '<div><br />';
 				for(var j=0;j<6;j++) {
 					teamHtml += '<span class="pokemonicon" style="float:left;'+Tools.getIcon(replay.player2.pokemon[j])+'"></span>';
 				}
+				teamHtml += '</div>';
+				teamHtml += '</div>';
 				
-				buf += '<div><a href="'+i+'" class="ilink"><small style="float:right">Replay</small><strong><i class="icon-comment-alt"></i> ' + replay.id + '<br /></strong>'+teamHtml+'</a></div>';
+				buf += '<div style="min-width:300px;"><a href="'+i+'" class="ilink replayLink">' + '&nbsp;' + ''+teamHtml+'</a></div>';
 			}
 
 
