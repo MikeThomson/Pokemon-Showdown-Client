@@ -2,9 +2,8 @@
 
 	var ReplayRoom = this.ReplayRoom = BattleRoom.extend({
 		type: 'replay',
-		setBattle : function(battle) {
-			this.battle.activityQueue = battle.activityQueue;
-			console.log(this.battle);
+		setReplay : function(replay) {
+			this.battle.activityQueue = replay.activityQueue;
 			this.battle.reset();
 			this.battle.play();
 		},
