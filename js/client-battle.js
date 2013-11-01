@@ -615,8 +615,8 @@
 		},
 		saveLocalReplay: function() {
 			console.log(this.battle);
-			Storage.replays = [{activityQueue : this.battle.activityQueue, id: Math.floor((Math.random()*100)+1)}];
-			Storage.saveReplays();
+			var replay = new Replay(this.battle);
+			Storage.saveReplay(replay);
 		},
 		skipTurn: function() {
 			this.battle.skipTurn();
