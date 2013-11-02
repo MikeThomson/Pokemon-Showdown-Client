@@ -7,7 +7,7 @@
   "window": {
 	  "icon": "icons/icon_32x32.png",
     "title": "Loading...",
-    "toolbar": false,
+    "toolbar": true,
     "show": false
   },
   "webkit": {
