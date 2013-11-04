@@ -7,6 +7,8 @@ function _Storage() {
 		this.startLoggingChat = this.nwStartLoggingChat;
 		this.stopLoggingChat = this.nwStopLoggingChat;
 		this.logChat = this.nwLogChat;
+		this.loadReplays = this.nwLoadReplays;
+		this.saveReplays = this.nwSaveAllReplays;
 	}
 }
 
@@ -25,9 +27,11 @@ _Storage.prototype.replays = null;
 
 _Storage.prototype.loadTeams = function() {
 	this.teams = [];
+	/*
 	if (window.nodewebkit) {
 		return;
 	}
+	*/
 	if (window.localStorage) {
 		var teamString = localStorage.getItem('showdown_teams');
 		if (teamString) this.teams = JSON.parse(teamString);
@@ -134,6 +138,7 @@ _Storage.prototype.initDirectory2 = function() {
 					self.dir = self.documentsDir+'My Games/Pokemon Showdown/';
 					fs.mkdir(self.dir+'Logs', function() {});
 					fs.mkdir(self.dir+'Teams', function() {});
+					fs.mkdir(self.dir+'Replays', function() {});
 
 					// load teams
 					self.nwLoadTeams();
@@ -285,6 +290,22 @@ _Storage.prototype.nwDoSaveAllTeams = function() {
 	}
 };
 
+_Storage.prototype.nwSaveAllReplays = function() {
+	// for now, just serialize and store
+	// TODO: Store the activityQueue as text, and do the same replay fprocessing to get the rest
+	// TODO: store each as individual files for sharing
+	var replayBlob = JSON.stringify(this.replays);
+	fs.writeFileSync(this.dir+'Replays/replays.json', replayBlob);
+	
+};
+
+_Storage.prototype.nwLoadReplays = function() {
+	// TODO: see _Storage.prototype.nwSaveAllReplays
+	this.replays = [];
+	if(fs.existsSync(this.dir+'Replays/replays.json'))
+		this.replays = JSON.parse(fs.readFileSync(this.dir+'Replays/replays.json', {encoding: 'utf8'}));
+	console.log(this.replays);
+};
 // logs
 
 _Storage.prototype.getLogMonth = function() {
