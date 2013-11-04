@@ -76,7 +76,7 @@
 		 */
 		getActionPHP: function() {
 			var ret = '/~~' + Config.server.id + '/action.php';
-			if (Config.testclient) {
+			if (Config.testclient || Config.desktopClient) {
 				ret = 'http://' + Config.origindomain + ret;
 			}
 			return (this.getActionPHP = function() {
@@ -208,6 +208,7 @@
 		},
 		focused: true,
 		initialize: function() {
+
 			window.app = this;
 			this.initializeRooms();
 			this.initializePopups();
@@ -220,7 +221,7 @@
 			if (document.location.hostname === 'play.pokemonshowdown.com') {
 				app.supportsRooms = true;
 			}
-
+			
 			this.topbar = new Topbar({el: $('#header')});
 			this.addRoom('');
 			if (!this.down && $(window).width() >= 916) {
@@ -232,7 +233,7 @@
 			}
 
 			var self = this;
-
+			
 			this.prefsLoaded = false;
 			this.on('init:loadprefs', function() {
 				self.prefsLoaded = true;
@@ -284,7 +285,7 @@
 			this.on('response:savereplay', this.uploadReplay, this);
 
 			this.on('response:rooms', this.roomsResponse, this);
-
+			
 			if (window.nodewebkit) {
 				nwWindow.on('focus', function() {
 					if (!self.focused) {
@@ -308,10 +309,11 @@
 					self.focused = false;
 				});
 			}
-
+			
 			this.initializeConnection();
 
 			Backbone.history.start({pushState: true});
+			
 		},
 		/**
 		 * Start up the client, including loading teams and preferences,
@@ -345,11 +347,13 @@
 		 *     triggered if the SockJS socket closes
 		 */
 		initializeConnection: function() {
-			if ((document.location.hostname !== Config.origindomain) && !Config.testclient) {
+			if ((document.location.hostname !== Config.origindomain) && !Config.testclient && !Config.desktopClient) {
 				// Handle *.psim.us.
 				return this.initializeCrossDomainConnection();
 			} else if (Config.testclient) {
 				this.initializeTestClient();
+			} else if (Config.desktopClient) {
+				return this.initializeDesktopClient();
 			} else if (document.location.protocol === 'https:') {
 				if (!$.cookie('showdown_ssl')) {
 					// Never used HTTPS before, so we have to copy over the
@@ -405,7 +409,14 @@
 				// different domain for the purpose of localStorage.
 				return this.initializeCrossDomainConnection();
 			}
-
+			console.log('here');
+			// Simple connection: no cross-domain logic needed.
+			Config.server = Config.server || Config.defaultserver;
+			Storage.loadTeams();
+			this.trigger('init:loadprefs');
+			return this.connect();
+		},
+		initializeDesktopClient: function() {
 			// Simple connection: no cross-domain logic needed.
 			Config.server = Config.server || Config.defaultserver;
 			Storage.loadTeams();
@@ -447,6 +458,7 @@
 			// we receive teams, prefs, and server connection information from
 			// crossdomain.php on play.pokemonshowdown.com.
 			var self = this;
+			
 			$(window).on('message', (function() {
 				var origin;
 				var callbacks = {};
@@ -468,7 +480,7 @@
 						Config.server = data.server;
 						if (Config.server.registered) {
 							var $link = $('<link rel="stylesheet" ' +
-								'href="//play.pokemonshowdown.com/customcss.php?server=' +
+								'href="http://play.pokemonshowdown.com/customcss.php?server=' +
 								encodeURIComponent(Config.server.id) + '" />');
 							$('head').append($link);
 						}
@@ -523,7 +535,7 @@
 				};
 			})());
 			var $iframe = $(
-				'<iframe src="//play.pokemonshowdown.com/crossdomain.php?host=' +
+				'<iframe src="http://play.pokemonshowdown.com/crossdomain.php?host=' +
 				encodeURIComponent(document.location.hostname) +
 				'&path=' + encodeURIComponent(document.location.pathname.substr(1)) +
 				'" style="display: none;"></iframe>'
@@ -1016,7 +1028,6 @@
 		uploadReplay: function(data) {
 			var id = data.id;
 			var serverid = Config.server.id && toId(Config.server.id.split(':')[0]);
-			console.log(data.log);
 			if (serverid && serverid !== 'showdown') id = serverid+'-'+id;
 			$.post(app.user.getActionPHP() + '?act=uploadreplay', {
 				log: data.log,
