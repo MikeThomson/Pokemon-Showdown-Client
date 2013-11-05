@@ -750,7 +750,7 @@
 				// Just open the main menu.
 				fragment = '';
 			} else if(Config.desktopClient) {
-				return;
+				fragment = '';
 			}
 			if (!fragment) fragment = '';
 			if (this.initialFragment === undefined) this.initialFragment = fragment;
