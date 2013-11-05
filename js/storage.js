@@ -331,12 +331,10 @@ _Storage.prototype.nwSaveAllReplays = function() {
 };
 
 _Storage.prototype.nwLoadFriends = function() {
-	console.log('called ' +this.dir+'Friends/friends.json');
 	this.friends = new FriendList();
-	if(fs.existsSync(this.dir+'Friends/friends.json')) {
+	if(fs.existsSync(this.dir+'Friends/friends.json')) 
 		this.friends.list = JSON.parse(fs.readFileSync(this.dir+'Friends/friends.json', {encoding: 'utf8'}));
-		console.log('loaded');
-	}
+	
 };
 
 _Storage.prototype.nwSaveAllFriends = function() {
@@ -351,7 +349,6 @@ _Storage.prototype.nwLoadReplays = function() {
 	this.replays = [];
 	if(fs.existsSync(this.dir+'Replays/replays.json'))
 		this.replays = JSON.parse(fs.readFileSync(this.dir+'Replays/replays.json', {encoding: 'utf8'}));
-	console.log(this.replays);
 };
 // logs
 
