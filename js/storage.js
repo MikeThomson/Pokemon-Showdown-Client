@@ -2,13 +2,14 @@
 function _Storage() {
 	if (window.nodewebkit) {
 		window.fs = require('fs');
-
 		this.initDirectory();
 		this.startLoggingChat = this.nwStartLoggingChat;
 		this.stopLoggingChat = this.nwStopLoggingChat;
 		this.logChat = this.nwLogChat;
 		this.loadReplays = this.nwLoadReplays;
 		this.saveReplays = this.nwSaveAllReplays;
+		this.loadFriends = this.nwLoadFriends;
+		this.saveFriends = this.nwSaveAllFriends;
 	}
 }
 
@@ -24,6 +25,7 @@ function _Storage() {
 
 _Storage.prototype.teams = null;
 _Storage.prototype.replays = null;
+_Storage.prototype.friends = null;
 
 _Storage.prototype.loadTeams = function() {
 	this.teams = [];
@@ -99,6 +101,33 @@ _Storage.prototype.loadReplays = function() {
 	}
 };
 
+_Storage.prototype.saveFriends = function() {
+	if (window.localStorage) {
+		Storage.cantSave = false;
+		try {
+			localStorage.setItem('showdown_friends', JSON.stringify(this.friends));
+		} catch (e) {
+			if (e.code === DOMException.QUOTA_EXCEEDED_ERR) {
+				Storage.cantSave = true;
+			} else {
+				throw e;
+			}
+		}
+	}
+};
+
+_Storage.prototype.loadFriends = function() {
+	this.replays = [];
+	if (window.nodewebkit) {
+		return;
+	}
+	if (window.localStorage) {
+		var jsonString = localStorage.getItem('showdown_friends');
+		if (jsonString) this.friends = JSON.parse(jsonString);
+		app.trigger('init:loadfriends');
+	}
+};
+
 
 /*********************************************************
  * Node-webkit
@@ -139,9 +168,11 @@ _Storage.prototype.initDirectory2 = function() {
 					fs.mkdir(self.dir+'Logs', function() {});
 					fs.mkdir(self.dir+'Teams', function() {});
 					fs.mkdir(self.dir+'Replays', function() {});
+					fs.mkdir(self.dir+'Friends', function() {});
 
 					// load teams
 					self.nwLoadTeams();
+					self.nwLoadFriends();
 					self.saveAllTeams = self.nwSaveAllTeams;
 					self.saveTeam = self.nwSaveTeam;
 					self.deleteTeam = self.nwDeleteTeam;
@@ -296,6 +327,22 @@ _Storage.prototype.nwSaveAllReplays = function() {
 	// TODO: store each as individual files for sharing
 	var replayBlob = JSON.stringify(this.replays);
 	fs.writeFileSync(this.dir+'Replays/replays.json', replayBlob);
+	
+};
+
+_Storage.prototype.nwLoadFriends = function() {
+	console.log('called ' +this.dir+'Friends/friends.json');
+	this.friends = new FriendList();
+	if(fs.existsSync(this.dir+'Friends/friends.json')) {
+		this.friends.list = JSON.parse(fs.readFileSync(this.dir+'Friends/friends.json', {encoding: 'utf8'}));
+		console.log('loaded');
+	}
+};
+
+_Storage.prototype.nwSaveAllFriends = function() {
+	// for now, just serialize and store
+	var friendBlob = JSON.stringify(this.friends.list);
+	fs.writeFileSync(this.dir+'Friends/friends.json', friendBlob);
 	
 };
 

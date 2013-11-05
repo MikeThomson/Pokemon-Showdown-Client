@@ -419,6 +419,7 @@
 			// Simple connection: no cross-domain logic needed.
 			Config.server = Config.server || Config.defaultserver;
 			Storage.loadTeams();
+			Storage.loadFriends();
 			this.trigger('init:loadprefs');
 			return this.connect();
 		},
