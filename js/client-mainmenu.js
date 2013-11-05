@@ -772,6 +772,7 @@
 				}
 			}
 			buf += '</select></p>';
+			buf += '<p><input type="checkbox" name="friends"/> Friends? </p>'
 			buf += '<div class="list"><p>Loading...</p></div>';
 			buf += '</div>';
 			this.$el.html(buf);
@@ -784,11 +785,17 @@
 		},
 		events: {
 			'click .ilink': 'clickLink',
-			'change select': 'changeFormat'
+			'change select': 'changeFormat',
+			'change input[name="friends"]': 'friendsSelected'
 		},
 		format: '',
 		changeFormat: function(e) {
 			this.format = e.currentTarget.value;
+			this.update();
+		},
+		friendsSelected: function(e) {
+			console.log(e);
+			this.friendsOnly = e.currentTarget.checked;
 			this.update();
 		},
 		update: function(data) {
@@ -813,6 +820,7 @@
 				}
 				var format = (matches[1]||'');
 				if (this.format && format !== this.format) continue;
+				if(this.friendsOnly ) continue;
 				var formatBuf = (format ? '<small>[' + Tools.escapeFormat(format) + ']</small><br />' : '');
 				var roomDesc = formatBuf + '<em class="p1">' + Tools.escapeHTML(roomData.p1) + '</em> <small class="vs">vs.</small> <em class="p2">' + Tools.escapeHTML(roomData.p2) + '</em>';
 				if (!roomData.p1) {
