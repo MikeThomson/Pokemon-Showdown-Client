@@ -1029,6 +1029,7 @@
 		uploadReplay: function(data) {
 			var id = data.id;
 			var serverid = Config.server.id && toId(Config.server.id.split(':')[0]);
+			console.log(data.log);
 			if (serverid && serverid !== 'showdown') id = serverid+'-'+id;
 			$.post(app.user.getActionPHP() + '?act=uploadreplay', {
 				log: data.log,
