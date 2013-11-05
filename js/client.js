@@ -409,7 +409,6 @@
 				// different domain for the purpose of localStorage.
 				return this.initializeCrossDomainConnection();
 			}
-			console.log('here');
 			// Simple connection: no cross-domain logic needed.
 			Config.server = Config.server || Config.defaultserver;
 			Storage.loadTeams();
@@ -746,10 +745,12 @@
 			};
 		},
 		dispatchFragment: function(fragment) {
-			if (Config.testclient) {
+			if (Config.testclient ) {
 				// Fragment dispatching doesn't work in testclient.html.
 				// Just open the main menu.
 				fragment = '';
+			} else if(Config.desktopClient) {
+				return;
 			}
 			if (!fragment) fragment = '';
 			if (this.initialFragment === undefined) this.initialFragment = fragment;
