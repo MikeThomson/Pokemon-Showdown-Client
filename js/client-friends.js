@@ -7,7 +7,8 @@
 		title: 'Friends',
 		isSideRoom: true,
 		events: {
-			'click .ilink': 'clickLink'
+			'click .ilink': 'clickLink',
+			'click .removeFriendButton': 'removeFriend'
 		},
 		initialize: function() {
 			this.$el.addClass('ps-room-light').addClass('scrollable');
@@ -33,6 +34,15 @@
 			this.update();
 		},
 		
+		removeFriend: function(e) {
+			if (e.cmdKey || e.metaKey || e.ctrlKey) return;
+			e.preventDefault();
+			e.stopPropagation();
+			var friend = $(e.currentTarget).attr('data-friend');
+			Storage.friends.remove(friend);
+			this.update();
+		},
+		
 		update: function() {
 			var buf = '<div class="pad"><button style="float:right" name="close">Close</button>';
 			
@@ -41,9 +51,8 @@
 			buf += '<h2>Friends</h2>';
 			for (var i=0; i<friends.length; i++) {
 				var friend = friends[i];
-				buf += '<div style="min-width:300px;"><a href="'+friend+'" class="ilink">' + '&nbsp;' +friend + '</a></div>';
+				buf += '<div style="min-width:300px;"><a href="'+friend+'" class="ilink">' + '&nbsp;' +friend + '&nbsp;&nbsp;&nbsp;&nbsp;<button style="float:right;" class="closebutton removeFriendButton" data-friend="'+friend+'"tabindex="-1"><i class="icon-remove-sign"></i></button></a></div>';
 			}
-
 
 			buf += '</div></div>';
 			this.$el.html(buf);
