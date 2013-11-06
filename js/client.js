@@ -1158,6 +1158,7 @@
 				'lobby': ChatRoom,
 				'staff': ChatRoom,
 				'replays' : ReplaysRoom,
+				'friends': FriendsRoom,
 			};
 			var typeTable = {
 				'battle': BattleRoom,
@@ -1446,7 +1447,7 @@
 			var name = ' '+app.user.get('name');
 			var color = hashColor(app.user.get('userid'));
 			if (app.user.get('named')) {
-				buf = '<span class="username" data-name="'+Tools.escapeHTML(name)+'" style="'+color+'"><i class="icon-user" style="color:#779EC5"></i> '+Tools.escapeHTML(name)+'</span> <button class="icon" name="openSounds"><i class="'+(Tools.prefs('mute')?'icon-volume-off':'icon-volume-up')+'"></i></button> <button class="icon" name="openOptions"><i class="icon-cog"></i></button>';
+				buf = '<span class="username" data-name="'+Tools.escapeHTML(name)+'" style="'+color+'"><i class="icon-user" style="color:#779EC5"></i> '+Tools.escapeHTML(name)+'</span> <button class="icon" name="openSounds"><i class="'+(Tools.prefs('mute')?'icon-volume-off':'icon-volume-up')+'"></i></button> <button class="icon" name="openOptions"><i class="icon-cog"></i></button> <button class="icon" name="openFriends"><i class="icon-group"></i></button>';
 			} else {
 				buf = '<button name="login">Choose name</button> <button class="icon" name="openSounds"><i class="'+(Tools.prefs('mute')?'icon-volume-off':'icon-volume-up')+'"></i></button> <button class="icon" name="openOptions"><i class="icon-cog"></i></button>';
 			}
@@ -1465,6 +1466,10 @@
 			e.stopPropagation();
 			var name = $(e.currentTarget).data('name');
 			app.addPopup(UserPopup, {name: name, sourceEl: e.currentTarget});
+		},
+		openFriends : function() {
+			app.addRoom('friends');
+			app.focusRoom('friends');
 		},
 
 		// tabbar

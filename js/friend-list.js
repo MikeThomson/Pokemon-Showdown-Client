@@ -21,5 +21,7 @@ function FriendList() {
 	this.add = function(name) {
 		if(!this.contains(name))
 			this.list.push(name);
+		// probably change this to an event listener?
+		Storage.saveFriends();
 	};
 }
