@@ -17,4 +17,9 @@ function FriendList() {
 		}
 		return false;
 	};
+	
+	this.add = function(name) {
+		if(!this.contains(name))
+			this.list.push(name);
+	};
 }

@@ -1951,7 +1951,8 @@
 			if (userid === app.user.get('userid') || !app.user.get('named')) {
 				buf += '<p class="buttonbar"><button disabled>Challenge</button> <button disabled>Chat</button></p>';
 			} else {
-				buf += '<p class="buttonbar"><button name="challenge">Challenge</button> <button name="pm">Chat</button></p>';
+				var buttonText = Storage.friends.contains(userid) ? '<button disabled name="addFriend">Add Friend</button>' : '<button name="addFriend">Add Friend</button>'
+				buf += '<p class="buttonbar"><button name="challenge">Challenge</button> <button name="pm">Chat</button> '+buttonText+' </p>';
 			}
 
 			this.$el.html(buf);
@@ -1978,6 +1979,9 @@
 			this.close();
 			app.focusRoom('');
 			app.rooms[''].focusPM(this.data.name);
+		},
+		addFriend: function() {
+			Storage.friends.add(this.data.name.substring(1));
 		}
 	},{
 		dataCache: {}
