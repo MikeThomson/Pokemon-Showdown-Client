@@ -939,6 +939,8 @@
 				if (this.rooms['lobby']) {
 					this.rooms['lobby'].receive(data);
 				}
+				// check if this is needed by the friends addon
+				if(data.substring(0,4) == 'User') Storage.friends.processStatusMessage(data);
 				break;
 			}
 		},

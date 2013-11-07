@@ -5,6 +5,7 @@ function FriendList() {
 	
 	this.list = [];
 	this.statuses = {};
+	
 	this.getList = function() {
 		return this.list;
 	};
@@ -41,5 +42,24 @@ function FriendList() {
 	
 	this.setStatus = function(name, status) {
 		this.statuses[name] = status;
+	};
+	
+	this.processStatusMessage = function(message) {
+		if(message.substring(0,6) == 'User: ') {
+			// user is online, rest of the message is the name
+			friend = message.substring(6);
+			if(this.contains(friend)) {
+				this.setStatus(friend, 'online');
+				return true;
+			}
+		} else if(message.substr(0,5) == 'User ') {
+			// User zerojin not found.
+			if(message.substr(-11) == ' not found.') {
+				friend = message.substr(5,message.length-16);
+				this.setStatus(friend, 'offline');
+				return true;
+			}
+		}
+		return false;
 	};
 }
