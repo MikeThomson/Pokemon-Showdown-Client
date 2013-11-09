@@ -2040,6 +2040,12 @@ a.ilink:hover {
 	color: #555555;
 }
 
+.truncate {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
 /*********************************************************
  * <blink>
  *********************************************************/
@@ -2063,3 +2069,5 @@ blink {
 	animation-duration: 1s;
 	text-decoration: none;
 }
+
+

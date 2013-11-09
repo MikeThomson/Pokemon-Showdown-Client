@@ -51,7 +51,11 @@
 			buf += '<h2>Friends</h2>';
 			for (var i=0; i<friends.length; i++) {
 				var friend = friends[i];
-				buf += '<div style="min-width:300px;"><a href="'+friend+'" class="ilink">' + '&nbsp;' +friend + '&nbsp;&nbsp;&nbsp;&nbsp;<button style="float:right;" class="closebutton removeFriendButton" data-friend="'+friend+'"tabindex="-1"><i class="icon-remove-sign"></i></button></a></div>';
+				boxStyle = (Storage.friends.getStatus(friend) == 'offline') ? 'style="opacity: 0.6;"' : '';
+				buf += '<div style="min-width:300px;"><a href="'+friend+'" class="ilink" '+boxStyle+'>' + '&nbsp;' +friend + '&nbsp;&nbsp;&nbsp;&nbsp;';
+				buf += ' <small class="truncate" style="width:70%;display:inline-block;">'+Storage.friends.getStatus(friend)+'</small>';
+				buf += '<button style="float:right;" class="closebutton removeFriendButton" data-friend="'+friend+'"tabindex="-1"><i class="icon-remove-sign"></i></button></a>';
+				buf += '</div>';
 			}
 
 			buf += '</div></div>';
