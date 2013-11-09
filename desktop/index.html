@@ -2,6 +2,32 @@
 <html>
 	<head>
 		<script>
+		
+		var path = require('path');
+		var flashTrust = require('nw-flash-trust');
+		
+		
+		var appName = 'showdown-mthomson';
+		try {
+		    // initialization and parsing config file for given appName (if already exists)
+		    var trustManager = flashTrust.initSync(appName);
+		} catch(err) {
+		    if (err.message === 'Flash Player config folder not found.') {
+		        // Directory needed to do the work does not exist.
+		        // Probbably Flash Player is not installed, there is nothing I can do.
+		    }
+		    console.log(err);
+		}
+		
+		
+		var appPath = path.dirname(process.execPath);
+		//console.log(appPath + '\\..\\swf');
+		//trustManager.add(appPath + '\\..\\swf');
+		trustManager.add("C:\\Users\\Mike\\workspaces\\node\\Pokemon-Showdown-Client\\swf\\soundmanager2_flash9_debug.swf");
+		trustManager.add("C:\\Users\\Mike\\workspaces\\node\\Pokemon-Showdown-Client\\swf\\soundmanager2_flash9.swf");
+		trustManager.add("C:\\Users\\Mike\\workspaces\\node\\Pokemon-Showdown-Client\\swf\\soundmanager2_debug.swf");
+		trustManager.add("C:\\Users\\Mike\\workspaces\\node\\Pokemon-Showdown-Client\\swf\\soundmanager2.swf");
+		
 var gui = require('nw.gui');
 var win = gui.Window.get();
 win.maximize();
