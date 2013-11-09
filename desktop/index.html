@@ -20,13 +20,11 @@
 		}
 		
 		
-		var appPath = path.dirname(process.execPath);
-		//console.log(appPath + '\\..\\swf');
-		//trustManager.add(appPath + '\\..\\swf');
-		trustManager.add("C:\\Users\\Mike\\workspaces\\node\\Pokemon-Showdown-Client\\swf\\soundmanager2_flash9_debug.swf");
-		trustManager.add("C:\\Users\\Mike\\workspaces\\node\\Pokemon-Showdown-Client\\swf\\soundmanager2_flash9.swf");
-		trustManager.add("C:\\Users\\Mike\\workspaces\\node\\Pokemon-Showdown-Client\\swf\\soundmanager2_debug.swf");
-		trustManager.add("C:\\Users\\Mike\\workspaces\\node\\Pokemon-Showdown-Client\\swf\\soundmanager2.swf");
+		var appPath = path.dirname(path.resolve(process.execPath, '../../swf/')); // will have to be changed when packed
+		trustManager.add(appPath + "\\soundmanager2_flash9_debug.swf");
+		trustManager.add(appPath + "\\soundmanager2_flash9.swf");
+		trustManager.add(appPath + "\\soundmanager2_debug.swf");
+		trustManager.add(appPath + "\\soundmanager2.swf");
 		
 var gui = require('nw.gui');
 var win = gui.Window.get();
