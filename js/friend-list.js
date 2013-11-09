@@ -6,6 +6,10 @@ function FriendList() {
 	this.list = [];
 	this.statuses = {};
 	this.lastWhois = null;
+	this.updating = false;
+	this.lastIndexUpdated = 0;
+	
+	var self = this;
 	
 	this.getList = function() {
 		return this.list;
@@ -73,5 +77,28 @@ function FriendList() {
 			} 
 		}
 		return false;
+	};
+	
+	self.updateCallback = function() {
+		if(!self.updating) return;
+		if(self.lastIndexUpdated >= self.list.length) {
+			self.lastIndexUpdated = 0;
+			setTimeout(self.updateCallback, 60 * 1000);
+		} else {
+			app.send('/whois ' + self.list[self.lastIndexUpdated]);
+			self.lastIndexUpdated++;
+			setTimeout(self.updateCallback, 10*1000);
+			
+		}
+	};
+	
+	this.enableUpdating = function() {
+		if(this.updating) return;
+		this.updating = true;
+		setTimeout(this.updateCallback, 1*1000);
+	};
+	
+	this.diasbleUpdating = function() {
+		this.updating = false;
 	};
 }

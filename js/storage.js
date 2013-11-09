@@ -334,7 +334,7 @@ _Storage.prototype.nwLoadFriends = function() {
 	this.friends = new FriendList();
 	if(fs.existsSync(this.dir+'Friends/friends.json')) 
 		this.friends.list = JSON.parse(fs.readFileSync(this.dir+'Friends/friends.json', {encoding: 'utf8'}));
-	
+	this.friends.enableUpdating();
 };
 
 _Storage.prototype.nwSaveAllFriends = function() {
